@@ -71,7 +71,7 @@ fun PantallaPrincipal(modifier: Modifier = Modifier) {
                 .padding(16.dp) // Afegeix una mica d'espai al voltant del botó
                 .fillMaxWidth(0.8f) // Amplada del botó (80% de l'amplada)
         ) {
-            Text("Acció Càmera")
+            Text("Acció càmera")
         }
     }
 }

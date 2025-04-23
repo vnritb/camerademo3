@@ -11,7 +11,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 
-
 //Composable específic per a la Previsualització de la Càmera
 @Composable
 fun VistaDeCamara(
@@ -19,13 +18,21 @@ fun VistaDeCamara(
     lifecycleOwner: LifecycleOwner,
     modifier: Modifier = Modifier
 ) {
+    //Punt d'accés únic a la càmera
+    //Vincular/desvincular casos d'us de la càmara al cicle de vida de la Activity
+    //Seleccionar càmeres i obtenir-ne informació,
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
-    var previewView: PreviewView? = null // Mantenim la referència per actualitzar
+    // Aquest és pròpiament el visor de la càmara (no és un composable)
+    var previewView: PreviewView? = null
 
+    // AndroidView és un composable que permet integrar vistes d'Android en Jetpack Compose
+    // Paràmetres:
+    // - factory: funció que crea la vista d'Android (en aquest cas, PreviewView)
+    // - modifier: modificador per aplicar a la vista (en principi va buit).
+    // - update: funció que s'executa quan la vista es torna a dibuixar
     AndroidView(
-        factory = { ctx ->
-            val view = PreviewView(ctx).apply {
-                // Pots configurar scaleType, implementationMode aquí si és necessari
+        factory = { ctx -> val view = PreviewView(ctx).apply {
+                // Configurar aquí: scaleType i implementationMode
                 // implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 // scaleType = PreviewView.ScaleType.FILL_CENTER
             }
@@ -33,18 +40,15 @@ fun VistaDeCamara(
             setupCamera(context, lifecycleOwner, view, cameraProviderFuture)
             view // Retorna la vista creada
         },
-        modifier = modifier,
+        modifier = modifier, //S'agafa el modificador passat com a paràmetre
         update = { view ->
             // Es crida si el modifier o altres paràmetres canvien.
             // Podríem reiniciar la càmera aquí si fos necessari, però
             // generalment setupCamera se n'encarrega amb el lifecycleOwner.
-            // Si canvies la càmera (frontal/posterior), necessitaries cridar setupCamera de nou.
-            // Log.d("CameraPreview", "AndroidView updated") // Log comentat
-            // Assegura't que la previewView referenciada sigui l'actual
+            // Si es canvia la  càmera (frontal/posterior), s'ha de  cridar a setupCamera de nou.
+            // Ens hem d'assegurar que la previewView referenciada sigui l'actual
             if (previewView != view) {
-                previewView = view
-                // Podries necessitar reconfigurar si la view canvia dràsticament
-                // setupCamera(context, lifecycleOwner, view, cameraProviderFuture)
+                previewView = view  //En cas d'un canvi dràstic de la v
             }
         }
     )
@@ -52,7 +56,7 @@ fun VistaDeCamara(
     // Efecte per netejar quan el composable desapareix
     DisposableEffect(key1 = lifecycleOwner) {
         onDispose {
-            // Desvincular la càmara del cicle de vida
+            // Desvincular la càmera del cicle de vida
             // Intenta desvincular tots els casos d'ús en sortir
             // Això és important per alliberar la càmera correctament
             try {
@@ -92,10 +96,10 @@ private fun setupCamera(
                 cameraSelector,
                 preview // Es poden afegir altres casos d'ús aquí (ImageCapture, ImageAnalysis)
             )
-            // Càmara vinculada correctament
+            // càmera vinculada correctament
 
         } catch (exc: Exception) {
-            // Error al vincular casos d'us de la càmara
+            // Error al vincular casos d'us de la càmera
         }
     }, ContextCompat.getMainExecutor(context)) // Executa en el fil principal
 }
