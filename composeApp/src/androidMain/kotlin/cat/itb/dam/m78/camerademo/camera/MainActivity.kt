@@ -3,10 +3,7 @@ package cat.itb.dam.m78.camerademo.camera
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import cat.itb.dam.m78.camerademo.camera.view.CameraPreview
-import cat.itb.dam.m78.camerademo.camera.view.MainScreen
+import cat.itb.dam.m78.camerademo.camera.view.PantallaPrincipal
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +11,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             //App()
-            MainScreen()  //En camera preview
+            PantallaPrincipal()  //En camera preview
         }
     }
 }
