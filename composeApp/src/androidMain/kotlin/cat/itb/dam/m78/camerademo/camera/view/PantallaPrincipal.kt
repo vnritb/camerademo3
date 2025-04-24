@@ -1,9 +1,5 @@
 package cat.itb.dam.m78.camerademo.camera.view
 
-import android.Manifest
-import android.content.Context
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner // Importació correcta per a compose
 
 
@@ -56,7 +51,7 @@ fun PantallaPrincipal(modifier: Modifier = Modifier) {
         Button (
             onClick = {
                 // Acció del botó (per exemple, fer foto, analitzar imatge, etc.)
-                // Aquí aniria la lògica per interactuar amb la càmera si fos necessari
+                // Aquí aniria la lògica per interactuar amb la càmera si fos necessari.
             },
             modifier = Modifier
                 .padding(16.dp) // Afegeix una mica d'espai al voltant del botó
