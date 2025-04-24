@@ -1,4 +1,8 @@
 [versions]
+# Compatibilitat entre Android Studio i Android Gradle Plugin
+# https://developer.android.com/studio/releases#android_gradle_plugin_and_android_studio_compatibility
+# Android studio està basat en IntelliJ IDEA
+# Si fem ervir InteliJ IDEA, llavors hem de fixar-nos en la versió de l'InteliJ IDEA, no en la de l'Android Studio
 agp = "8.8.2"
 android-compileSdk = "35"
 android-minSdk = "24"
