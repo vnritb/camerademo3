@@ -2,6 +2,7 @@ package cat.itb.dam.m78.camerademo.camera.view
 
 import android.content.Context
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -57,7 +58,7 @@ fun VistaDeCamara(
     DisposableEffect(key1 = lifecycleOwner) {
         onDispose {
             // Desvincular la càmera del cicle de vida
-            // Intenta desvincular tots els casos d'ús en sortir
+            // Intentar desvincular tots els casos d'ús en sortir
             // Això és important per alliberar la càmera correctament
             try {
                 cameraProviderFuture.get()?.unbindAll()
@@ -75,14 +76,21 @@ private fun setupCamera(
     previewView: PreviewView,
     cameraProviderFuture: com.google.common.util.concurrent.ListenableFuture<ProcessCameraProvider>
 ) {
+    /*camaraProviderFuture és un objecte que conté la instància de ProcessCameraProvider
+     * i s'assegura que la càmera estigui disponible abans de vincular-la
+     * El processCameraProvider és l'objecte que gestiona la càmera
+     */
     cameraProviderFuture.addListener({
         try {
             val cameraProvider = cameraProviderFuture.get()
 
             // Configuració del cas d'ús Preview
-            val preview = Preview.Builder().build().also {
+            val previewUseCase = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
+
+            // Configuració del cas d'us imageCapture
+            val imageCaptureUseCase: ImageCapture= ImageCapture.Builder().build()
 
             // Selecció de la càmera (posterior per defecte)
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -94,7 +102,8 @@ private fun setupCamera(
             cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                preview // Es poden afegir altres casos d'ús aquí (ImageCapture, ImageAnalysis)
+                previewUseCase,
+                imageCaptureUseCase
             )
             // càmera vinculada correctament
 
